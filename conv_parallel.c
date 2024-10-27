@@ -19,7 +19,7 @@ int main(){
     // ---- end input and malloc----
 
     // implement here
-    printf("\n");
+    //printf("\n");
     int nowpos=0;
     int total_sum;
     int partial_sum;
