@@ -19,29 +19,22 @@ int main(){
     // ---- end input and malloc----
 
     // implement here
-    //printf("\n");
-    int nowpos=0;
-    int total_sum;
-    int partial_sum;
-    while(nowpos+NF<=NA){
-        #pragma omp parallel private(partial_sum) shared(total_sum)
-        {
-            total_sum=0;
-            partial_sum=0;
-            for(int i=0;i<NF;i++){
-                partial_sum+=A[nowpos+i]*F[NF-1-i];
-            }
+    
+    int *ans=malloc(sizeof(int) * NA-NF+1);
 
-            #pragma omp critical
-            {
-                total_sum+=partial_sum;
-            }
+    #pragma omp parallel for num_threads(4)
+    for(int k=0;k<=NA-NF;k++){
+        ans[k]=0;
+        for(int i=0;i<NF;i++){
+            ans[k]+=A[k+i]*F[NF-1-i];
         }
-        printf("%d\n",total_sum);
-        nowpos++;
     }
 
+    for(int k=0;k<=NA-NF;k++){
+        printf("%d\n",ans[k]);
+    }
     // ---- free memory ----
+    free(ans);
     free(F);
     free(A);
     // ---- end free ----
