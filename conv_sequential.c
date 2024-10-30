@@ -19,29 +19,20 @@ int main(){
     // implement here
 
     int *ans=malloc(sizeof(int) * NA-NF+1);
-    int *FF = malloc(sizeof(int) * NF);
 
     for(int i=0;i<NA-NF+1;i++){
         ans[i]=0;
-    }
-
-    for(int i=0;i<NF;i++){
-        FF[i]=F[NF-i-1];
-    }
-
-    for(int i=0;i<NF;i++){
-        for(int j=i;j-i<NA-NF+1;j++){
-            ans[j-i]+=A[j]*FF[i];
+        for(int j=0;j<NF;j++){
+            ans[i]+=A[i+j]*F[NF-j-1];
         }
     }
     
-    for(int k=0;k<=NA-NF;k++){
-        printf("%d\n",ans[k]);
+    for(int i=0;i<=NA-NF;i++){
+        printf("%d\n",ans[i]);
     }
 
     // ---- free memory ----
     free(ans);
-    free(FF);
     free(F);
     free(A);
     // ---- end free ----
