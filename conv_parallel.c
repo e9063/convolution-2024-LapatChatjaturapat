@@ -30,11 +30,13 @@ int main(){
             ans[i]=0;
         }
 
+        #pragma omp barrier
         #pragma omp for
         for(int i=0;i<NF;i++){
             FF[i]=F[NF-i-1];
         }
 
+        #pragma omp barrier
         #pragma omp for
         for(int i=0;i<NF;i++){
             for(int j=i;j-i<NA-NF+1;j++){
