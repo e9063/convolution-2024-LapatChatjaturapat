@@ -22,6 +22,7 @@ int main(){
     
     int *ans=malloc(sizeof(int) * NA-NF+1);
     int *FF = malloc(sizeof(int) * NF);
+
     #pragma omp parallel num_threads(4)
     {
         #pragma omp for
@@ -29,12 +30,11 @@ int main(){
             ans[i]=0;
         }
 
-        #pragma omp for nowait
+        #pragma omp for
         for(int i=0;i<NF;i++){
             FF[i]=F[NF-i-1];
         }
 
-        #pragma omp barrier
         #pragma omp for
         for(int i=0;i<NF;i++){
             for(int j=i;j-i<NA-NF+1;j++){
