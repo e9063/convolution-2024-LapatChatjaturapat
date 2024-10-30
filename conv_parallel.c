@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include <omp.h>
+#include<omp.h>
 
 
 int main(){
@@ -21,20 +21,35 @@ int main(){
     // implement here
     
     int *ans=malloc(sizeof(int) * NA-NF+1);
+    int *FF = malloc(sizeof(int) * NF);
+    #pragma omp parallel num_threads(4)
+    {
+        #pragma omp for
+        for(int i=0;i<NA-NF+1;i++){
+            ans[i]=0;
+        }
 
-    #pragma omp parallel for num_threads(4)
-    for(int k=0;k<=NA-NF;k++){
-        ans[k]=0;
+        #pragma omp for nowait
         for(int i=0;i<NF;i++){
-            ans[k]+=A[k+i]*F[NF-1-i];
+            FF[i]=F[NF-i-1];
+        }
+
+        #pragma omp barrier
+        #pragma omp for
+        for(int i=0;i<NF;i++){
+            for(int j=i;j-i<NA-NF+1;j++){
+                ans[j-i]+=A[j]*FF[i];
+            }
         }
     }
-
+    
     for(int k=0;k<=NA-NF;k++){
         printf("%d\n",ans[k]);
     }
+
     // ---- free memory ----
     free(ans);
+    free(FF);
     free(F);
     free(A);
     // ---- end free ----
